@@ -10,6 +10,10 @@ function reload() {
 async function fetchNews(query) {
     const res = await fetch(`${url}${query}&apiKey=${API_KEY}`);
     const data = await res.json();
+    console.log (data.data);
+    if (data.article) {
+        bindData(data.article);
+    }
     bindData(data.articles);
 }
 
@@ -19,12 +23,15 @@ function bindData(articles) {
 
     cardsContainer.innerHTML = "";
 
-    articles.forEach((article) => {
-        if (!article.urlToImage) return;
-        const cardClone = newsCardTemplate.content.cloneNode(true);
-        fillDataInCard(cardClone, article);
-        cardsContainer.appendChild(cardClone);
-    });
+    if (articles) {
+        articles.forEach((article) => {
+            if (!article.urlToImage) return;
+            const cardClone = newsCardTemplate.content.cloneNode(true);
+            fillDataInCard(cardClone, article);
+            cardsContainer.appendChild(cardClone);
+        });
+    }
+   
 }
 
 function fillDataInCard(cardClone, article) {
