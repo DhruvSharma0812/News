@@ -7,14 +7,33 @@ function reload() {
     window.location.reload();
 }
 
+// async function fetchNews(query) {
+//     const res = await fetch(`${url}${query}&apiKey=${API_KEY}`);
+//     const data = await res.json();
+//     bindData(data.articles);
+// }
+
+// function bindData(articles) {
+//     const cardsContainer = document.getElementById("cards-container");
+//     const newsCardTemplate = document.getElementById("template-news-card");
+
+//     cardsContainer.innerHTML = "";
+
+//     articles.forEach((article) => {
+//         if (!article.urlToImage) return;
+//         const cardClone = newsCardTemplate.content.cloneNode(true);
+//         fillDataInCard(cardClone, article);
+//         cardsContainer.appendChild(cardClone);
+//     });
+// }
 async function fetchNews(query) {
     const res = await fetch(`${url}${query}&apiKey=${API_KEY}`);
-    const data = await res.json();
-    console.log (data.data);
-    if (data.article) {
-        bindData(data.article);
+    const data= await res.json();
+    console.log(data)
+    
+    if (data.articles) {
+        bindData(data.articles);
     }
-    bindData(data.articles);
 }
 
 function bindData(articles) {
@@ -23,17 +42,13 @@ function bindData(articles) {
 
     cardsContainer.innerHTML = "";
 
-    if (articles) {
-        articles.forEach((article) => {
-            if (!article.urlToImage) return;
-            const cardClone = newsCardTemplate.content.cloneNode(true);
-            fillDataInCard(cardClone, article);
-            cardsContainer.appendChild(cardClone);
-        });
-    }
-   
+    articles?.forEach((article) => {
+        if (!article.urlToImage) return;
+        const cardClone = newsCardTemplate.content.cloneNode(true);
+        fillDataInCard(cardClone, article);
+        cardsContainer.appendChild(cardClone);
+    });
 }
-
 function fillDataInCard(cardClone, article) {
     const newsImg = cardClone.querySelector("#news-img");
     const newsTitle = cardClone.querySelector("#news-title");
